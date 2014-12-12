@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ ! -d drupal ]; then
+    bin/setup
+fi
+
+cd drupal && php -S localhost:8010

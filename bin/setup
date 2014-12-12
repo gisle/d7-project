@@ -24,4 +24,5 @@ if [ ! -d site ]; then
     cp -a drupal/sites/.default.orig site
     cp site/default.settings.php site/settings.php
     chmod +w site/settings.php
+    echo "http://localhost:8010" >site/base_url
 fi
