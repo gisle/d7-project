@@ -21,7 +21,7 @@ ln -s ../../../../themes drupal/sites/all/themes/custom
 (cd drupal && git add . && git commit -m "Enable symlinks")
 
 if [ ! -d site ]; then
-    cp -a drupal/sites/default site
+    cp -a drupal/sites/.default.orig site
     cp site/default.settings.php site/settings.php
     chmod +w site/settings.php
 fi
