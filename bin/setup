@@ -1,0 +1,27 @@
+#!/bin/sh
+
+if [ -d drupal ]; then
+    echo "Drupal appears to already be set up, remove drupal/ to start fresh"
+    exit 1
+fi
+
+set -x
+
+composer install
+
+vendor/bin/drush make drupal.make drupal
+git init drupal
+(cd drupal && git add . && git commit -m "Drupal baseline")
+
+(cd drupal && git mv sites/default sites/.default.orig && git commit -m "Move sites/default out of the way")
+
+ln -s ../../site drupal/sites/default
+ln -s ../../../../modules drupal/sites/all/modules/custom
+ln -s ../../../../themes drupal/sites/all/themes/custom
+(cd drupal && git add . && git commit -m "Enable symlinks")
+
+if [ ! -d site ]; then
+    cp -a drupal/sites/default site
+    cp site/default.settings.php site/settings.php
+    chmod +w site/settings.php
+fi
