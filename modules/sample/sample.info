@@ -1,0 +1,3 @@
+name = Sample project module
+description = This is just an placeholder demonstrating a project specific module.  You probably want to just delete once you get the idea about where to place your modules.
+core = 7.x
