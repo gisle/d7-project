@@ -1,13 +1,15 @@
 d7-project
 ==========
 
-Template for starting a new Drupal 7 project where you have custom modules tracked in git.
+Template for starting a new Drupal 7 project where you have custom modules
+tracked in [git](http://git-scm.com).  The aim is to conveniently track your code
+without having to mix Drupal core or contrib modules in the same repository.
 
 ## How to get started
 
 0. Install [composer](https://getcomposer.org).  Run `composer --version` to
 verify that it works.  On Mac OS X `brew install composer` is usually the
-most conveinient way to make sure it's available.
+most convenient way to make sure it's available.
 
 1. Clone this repo
 
@@ -36,7 +38,8 @@ This section explains the layout of this Drupal 7 project.
 - modules/
 - scripts/
 - site/
-- theme/
+- site/base\_url
+- themes/
 - vendor/
 
 ## How to add a custom module
