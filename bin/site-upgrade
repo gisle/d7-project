@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Run this script to upgrade the application in-place.
+# This will rebuild the 'drupal' directory, run any outstanding update tasks,
+# and update site configuration controlled by features.
+
+OLD=drupal
+NEW=drupal.new
+
+if [ ! -d $OLD ]; then
+    echo "No $OLD to upgrade; initial setup with bin/setup first"
+    exit 1
+fi
+
+if [ -d $NEW ]; then
+    rm -rf $NEW
+fi
+
+echo "Drush make $NEW"
+bin/setup $NEW >$NEW.out 2>&1
+mv $NEW.out $NEW/build.out
+
+echo "Entering maintenance mode"
+bin/site-drush vset maintenance_mode 1
+bin/site-drush cc all
+sleep 2  # let processes that are running get a chance to complete
+
+# Replace the drupal directory
+rm -rf $OLD.old
+mv $OLD $OLD.old
+mv $NEW $OLD || exit 2
+rm -rf $OLD.old
+
+# This procedure is a bit crazy
+bin/site-drush features-revert-all --yes
+bin/site-drush cc all
+bin/site-drush updatedb --yes
+bin/site-drush cc all
+bin/site-drush features-revert-all --yes
+bin/site-drush cc all
+
+echo "Leaving maintenance mode"
+bin/site-drush vset maintenance_mode 0
