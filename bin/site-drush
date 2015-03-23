@@ -15,10 +15,11 @@ unless (-x $drush) {
 my $base_url;
 if (open(my $fd, "$root/site/base_url")) {
     $base_url = <$fd>;
+    chomp($base_url);
 }
 die "Not base_url set; please create the site/base_url file" unless $base_url;
 $base_url = "http://$base_url" unless $base_url =~ /^https?:/;
 
 my @drush = ($drush, "--root=$root/drupal", "--uri=$base_url", "--config=$root/etc", @ARGV);
-print ">>> @drush\n";
+print STDERR ">>> @drush\n";
 exec @drush;
