@@ -10,9 +10,18 @@ fi
 set -x
 
 # curl -sS https://getcomposer.org/installer | php -- --install-dir=bin --filename=composer
-composer install
+composer install || exit 2
 
-vendor/bin/drush make drupal.make $DRUPAL_DIR
+if vendor/bin/drush make drupal.make $DRUPAL_DIR; then
+    : ok
+else
+    echo "Failed building the $DRUPAL_DIR directory, aborting";
+    if [ -d $DRUPAL_DIR ]; then
+	rm -rf $DRUPAL_DIR
+    fi
+    exit 3
+fi
+
 git init $DRUPAL_DIR
 (cd $DRUPAL_DIR && git add . && git commit -m "Drupal baseline")
 
